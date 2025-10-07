@@ -1,0 +1,10 @@
+# configs/paths.yaml
+project_root: .
+data_dir: data # contiendra train/, test/, train_labels.csv, sample_submission.csv
+splits_dir: ${project_root}/data/splits
+train_images: ${data_dir}/train
+test_images: ${data_dir}/test
+train_labels_csv: ${data_dir}/train_labels.csv
+sample_sub_csv: ${data_dir}/sample_submission.csv
+logs_dir: ${project_root}/logs
+mlruns_dir: ${project_root}/mlruns

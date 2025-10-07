@@ -1,0 +1,9 @@
+# configs/models.yaml
+available:
+  - resnet18
+  - resnet50
+  - vgg16
+  - efficientnet_b0
+  - densenet121
+  - ibracancermodel
+default: resnet18

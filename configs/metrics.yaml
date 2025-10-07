@@ -1,0 +1,7 @@
+# configs/metrics.yaml
+primary: auc
+others:
+  - accuracy@0.5
+  - precision@0.5
+  - recall@0.5
+  - f1@0.5

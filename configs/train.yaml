@@ -1,0 +1,11 @@
+# configs/train.yaml
+batch_size: 64
+img_size: 96 # si pretrained=True sur ImageNet, passe à 224
+epochs: 2
+lr: 0.001
+weight_decay: 0.0001
+device: cuda # bascule auto sur cpu si pas de GPU
+num_workers: 2
+model_name: resnet18 # change dans le menu
+pretrained: false # true pour poids ImageNet (penser img_size=224)
+early_stopping: 0 # 0 = off, sinon nb d'époques sans amélioration
