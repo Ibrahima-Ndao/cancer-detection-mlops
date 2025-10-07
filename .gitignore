@@ -1,0 +1,10 @@
+# .gitignore
+.venv/
+__pycache__/
+*.pt
+*.pth
+mlruns/
+logs/
+data/
+notebooks/.ipynb_checkpoints/
+.DS_Store
