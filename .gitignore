@@ -8,3 +8,4 @@ logs/
 data/
 notebooks/.ipynb_checkpoints/
 .DS_Store
+/data
