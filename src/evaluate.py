@@ -1,5 +1,5 @@
 # src/evaluate.py
-import argparse, os, platform, time
+import argparse, os, platform, time, json
 import torch, numpy as np
 from src.utils.logger import setup_logging
 from src.utils.config import load_all_configs
@@ -59,6 +59,13 @@ def main():
     logger = setup_logging()
     cfg = load_all_configs()
     run_eval(cfg, logger, args.model, args.weights, img_size=args.img_size)
+    # write metrics json si demandé par env ou param
+    out_json = os.environ.get("EVAL_JSON", None)
+    if out_json:
+        os.makedirs(os.path.dirname(out_json), exist_ok=True)
+        with open(out_json, "w", encoding="utf-8") as f:
+            json.dump(m, f, indent=2)
+    return m
 
 if __name__ == "__main__":
     main()
