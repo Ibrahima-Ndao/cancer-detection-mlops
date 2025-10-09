@@ -1,0 +1,21 @@
+# 0) (si pas fait) créer les splits
+python -m src.data.prepare_splits
+
+# 1) Entraîner un modèle (ex: ResNet18)
+python -m src.train --model resnet18 --epochs 2 --batch-size 64 --img-size 96
+
+# 2) Autres backbones
+python -m src.train --model resnet50         --epochs 2 --batch-size 64 --img-size 96
+python -m src.train --model vgg16            --epochs 2 --batch-size 64 --img-size 96
+python -m src.train --model densenet121      --epochs 2 --batch-size 64 --img-size 96
+python -m src.train --model efficientnet_b0  --epochs 2 --batch-size 64 --img-size 96
+python -m src.train --model ibracancermodel  --epochs 2 --batch-size 64 --img-size 96
+
+
+python -m src.train_many --models all --epochs 2 --batch-size 64 --img-size 96
+
+python -m src.train_many --models resnet18,efficientnet_b0 --epochs 3 --batch-size 32 --img-size 224 --pretrained --device cuda
+
+
+
+mlflow ui --backend-store-uri ./mlruns

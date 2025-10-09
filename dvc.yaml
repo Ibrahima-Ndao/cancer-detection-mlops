@@ -1,0 +1,42 @@
+stages:
+  prepare:
+    cmd: python -m src.data.prepare_splits
+    deps:
+      - src/data/prepare_splits.py
+      - configs/paths.yaml
+      - data/train_labels.csv
+    outs:
+      - data/splits
+
+  train:
+    cmd: python -m src.train
+    deps:
+      - src/train.py
+      - src/models/models.py
+      - src/data/dataset.py
+      - configs/train.yaml
+      - configs/paths.yaml
+      - data/splits
+    params:
+      - configs/train.yaml:
+          - batch_size
+          - img_size
+          - epochs
+          - lr
+          - weight_decay
+          - model_name
+          - pretrained
+          - num_workers
+    outs:
+      - checkpoints
+
+  evaluate:
+    cmd: EVAL_JSON=reports/metrics.json python -m src.evaluate --model ${train.model_name} --weights checkpoints/best_${train.model_name}.pt --img-size ${train.img_size}
+    deps:
+      - src/evaluate.py
+      - checkpoints/best_${train.model_name}.pt
+      - configs/train.yaml
+      - configs/paths.yaml
+      - src/data/dataset.py
+    metrics:
+      - reports/metrics.json
