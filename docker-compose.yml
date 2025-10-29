@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  cancer-detection-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cancer-detection-api
+    ports:
+      - "8080:8080"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - LOG_LEVEL=info
+    volumes:
+      # Volume pour les checkpoints (si stockés localement)
+      - ./checkpoints:/app/checkpoints:ro
+      # Volume pour les logs
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import requests; requests.get('http://localhost:8080/health')",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - api-network
+    # Limites de ressources (optionnel mais recommandé)
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 4G
+        reservations:
+          cpus: "1"
+          memory: 2G
+
+networks:
+  api-network:
+    driver: bridge
