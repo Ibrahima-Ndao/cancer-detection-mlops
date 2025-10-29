@@ -4,6 +4,8 @@ __pycache__/
 *.pt
 *.pth
 mlruns/
+mlruns_backup_20251010_230510/
+notebooks/reports/
 logs/
 data/
 notebooks/.ipynb_checkpoints/

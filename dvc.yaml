@@ -1,3 +1,7 @@
+vars:
+  # importe les variables (model_name, img_size, epochs, ...) dans le template
+  - configs/train.yaml
+
 stages:
   prepare:
     cmd: python -m src.data.prepare_splits
@@ -9,6 +13,7 @@ stages:
       - data/splits
 
   train:
+    # on lit les hyperparams dans configs/train.yaml (et on les logue dans MLflow)
     cmd: python -m src.train
     deps:
       - src/train.py
@@ -31,10 +36,11 @@ stages:
       - checkpoints
 
   evaluate:
-    cmd: EVAL_JSON=reports/metrics.json python -m src.evaluate --model ${train.model_name} --weights checkpoints/best_${train.model_name}.pt --img-size ${train.img_size}
+    # ⚠️ Windows: pas de "EVAL_JSON=..." (syntax POSIX) → on passe un flag --out-json
+    cmd: python -m src.evaluate --model ${model_name} --weights checkpoints/best_${model_name}.pt --img-size ${img_size} --out-json reports/metrics.json
     deps:
       - src/evaluate.py
-      - checkpoints/best_${train.model_name}.pt
+      - checkpoints
       - configs/train.yaml
       - configs/paths.yaml
       - src/data/dataset.py
